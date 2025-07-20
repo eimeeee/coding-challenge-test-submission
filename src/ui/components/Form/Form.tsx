@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, InputHTMLAttributes } from 'react';
 
 import Button from '../Button/Button';
 import InputText from '../InputText/InputText';
@@ -7,16 +7,14 @@ import $ from './Form.module.css';
 interface FormEntry {
   name: string;
   placeholder: string;
-  // TODO: Defined a suitable type for extra props
-  // This type should cover all different of attribute types
-  extraProps: any;
+  extraProps: InputHTMLAttributes<HTMLInputElement>;
 }
 
 interface FormProps {
   label: string;
   loading: boolean;
   formEntries: FormEntry[];
-  onFormSubmit: () => void;
+  onFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   submitText: string;
 }
 

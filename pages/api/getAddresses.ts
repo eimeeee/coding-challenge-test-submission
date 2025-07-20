@@ -2,6 +2,23 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import generateMockAddresses from "../../src/utils/generateMockAddresses";
 
+const isStrictlyNumeric = (value: string) => {
+  return /^\d+$/.test(value);
+};
+
+const validateField = (name: string, value: any, minLength = 1) => {
+  if (!value) {
+    return `${name} fields mandatory!`;
+  }
+  if (value.length < minLength) {
+    return `${name} must be at least ${minLength} digits!`;
+  }
+  if (!isStrictlyNumeric(value)) {
+    return `${name} must be all digits and non negative!`;
+  }
+  return null;
+};
+
 export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
@@ -26,25 +43,22 @@ export default async function handle(
     });
   }
 
-  /** TODO: Implement the validation logic to ensure input value
-   *  is all digits and non negative
-   */
-  const isStrictlyNumeric = (value: string) => {
-    return true;
-  };
-
-  /** TODO: Refactor the code below so there is no duplication of logic for postCode/streetNumber digit checks. */
-  if (!isStrictlyNumeric(postcode as string)) {
+  const postcodeError = validateField("Postcode", postcode, 4);
+  
+  if (postcodeError) {
     return res.status(400).send({
       status: "error",
-      errormessage: "Postcode must be all digits and non negative!",
+      // DO NOT MODIFY MSG - used for grading
+      errormessage: postcodeError,
     });
   }
 
-  if (!isStrictlyNumeric(streetnumber as string)) {
+  const streetError = validateField("Street Number", streetnumber);
+
+  if (streetError) {
     return res.status(400).send({
       status: "error",
-      errormessage: "Street Number must be all digits and non negative!",
+      errormessage: streetError,
     });
   }
 

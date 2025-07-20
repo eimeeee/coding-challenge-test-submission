@@ -1,12 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, InputHTMLAttributes } from "react";
 
 import $ from "./InputText.module.css";
 
-interface InputTextProps {
+interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
-  placeholder: string;
-  value: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const InputText: FunctionComponent<InputTextProps> = ({
@@ -14,6 +11,7 @@ const InputText: FunctionComponent<InputTextProps> = ({
   onChange,
   placeholder,
   value,
+  ...rest
 }) => {
   return (
     <input
@@ -24,6 +22,7 @@ const InputText: FunctionComponent<InputTextProps> = ({
       placeholder={placeholder}
       type="text"
       value={value}
+      {...rest}
     />
   );
 };
